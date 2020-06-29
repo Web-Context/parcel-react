@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useMemo, useCallback, useRef } from 'react'
+import React, { useReducer } from 'react'
 import { render } from 'react-dom'
 
 function wait(duration) {
@@ -10,27 +10,36 @@ function wait(duration) {
     }
 }
 
+function init(initialValue) {
+    return { count: initialValue }
+}
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'increment':
+            return { count: state.count + (action.payload || 1) };
+        case 'decrement':
+            if (state.count <= 0) {
+                return state
+            }
+            return { count: state.count - (action.payload || 1) };
+        case 'reset':
+            return init(0);
+        default:
+            throw new Error("L'action" + action.type + " est inconnue")
+    }
+}
 
 function App() {
-    const [count, setCount] = useState(0)
-    const button = useRef(null)
-    const increment = useCallback(() => {
-        setCount(c => c + 1)
-    }, [])
-
-    useLayoutEffect(() => {
-        if(count %2 === 0){
-            button.current.style.color = 'green'
-        }else{
-            button.current.style.color = 'red'
-
-        }
-    })
+    const [count, dispatch] = useReducer(reducer, 0, init)
 
     return <div>
-        <button onClick={increment} ref={button}>
-            Incrément {count}
-        </button>
+        Compteur: {JSON.stringify(count)}
+        <button onClick={() => dispatch({ type: 'increment', payload: 10 })}>+10</button>
+        <button onClick={() => dispatch({ type: 'increment' })}>+1</button>
+        <button onClick={() => dispatch({ type: 'decrement' })}>-1</button>
+        <button onClick={() => dispatch({ type: 'decrement', payload: 10 })}>-10</button>
+        <button onClick={() => dispatch({ type: 'reset' })}>Réinitialiser</button>
     </div>
 }
 
