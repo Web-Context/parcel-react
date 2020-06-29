@@ -132,6 +132,8 @@ $> docker-compose up -d --build
 - **useMemo** store a value in [memory](https://fr.reactjs.org/docs/hooks-reference.html#usememo) for a pure component
 - **userCallback** set a [call back function](https://fr.reactjs.org/docs/hooks-reference.html#usecallback) for a pure component.
 
+- **useRef** 
+
 That's it !
 
 [McGivrer](mailto:frederic.delorme@gmail.com?subject=React-and-Parcel<github> "Contact the author")
